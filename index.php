@@ -59,8 +59,7 @@ include 'partials/_dbconnect.php';
 
       // use a for loop to iterate through categories
       while($row = mysqli_fetch_assoc($result)){
-        // echo $row['category_id'];
-        // echo $row['category_name'];
+        $categoryId = $row['category_id'];
         $categoryName = $row['category_name'];
         $categoryDescription = $row['category_description'];
     ?>
@@ -70,9 +69,9 @@ include 'partials/_dbconnect.php';
         <div class="card" style="width: 18rem;">
           <img src="https://source.unsplash.com/500x500/?coding,language,<?= $categoryName ?>" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title"><?= $categoryName ?></h5>
+            <h5 class="card-title"> <?= $categoryName ?> </h5>
             <p class="card-text"><?= substr($categoryDescription, 0, 80) ?>...</p>
-            <a href="#" class="btn btn-primary">View Threads</a>
+            <a href="threadList.php?categoryid=<?= $categoryId?>" class="btn btn-primary">View Threads</a>
           </div>
         </div>
       </div>
