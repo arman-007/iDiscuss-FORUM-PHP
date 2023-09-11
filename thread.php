@@ -18,8 +18,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 ?>
 
-
-
 <!doctype html>
 <html lang="en">
 
@@ -63,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $commentBy = $row['comment_by'];
                 $commentId = $row['comment_id'];
                 $comment = $row['comment_content'];
-                // $threadDesc = $row['thread_desc'];
+                $commentTime = $row['commented_at'];
         ?>
         <!-- comments list -->
         <div class="d-flex my-2">
@@ -71,7 +69,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <img src="..." alt="...">
             </div>
             <div class="flex-grow-1 ms-3">
-                <h5 class="mt-0"> <a href="thread.php" class="link-dark"> <?= $commentBy ?> </a> </h5>
+                <h6 class="mt-0 my-0"> <a href="thread.php" class="link-dark"> <?= $commentBy ?> </a> : <?= $commentTime ?> </h6>
                 <?= $comment ?>
             </div>
         </div>
@@ -96,7 +94,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- footer -->
     <?php include 'partials/_footer.php' ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
-
 </html>

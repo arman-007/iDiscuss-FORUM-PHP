@@ -104,6 +104,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $threadId = $row['thread_id'];
                 $threadTitle = $row['thread_title'];
                 $threadDesc = $row['thread_desc'];
+                $threadTime = $row['timestamp'];
         ?>
                 <!-- thred list -->
                 <div class="d-flex my-2">
@@ -111,7 +112,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         <img src="..." alt="...">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <h5 class="mt-0"> <a href="thread.php?threadid=<?= $threadId ?>" class="link-dark"> <?= $threadTitle ?> </a> </h5>
+                        <h6 class="mt-0"> <a href="thread.php?threadid=<?= $threadId ?>" class="link-dark"> <?= $threadTitle ?> </a> : <?= $threadTime ?> </h6>
                         <?= $threadDesc ?>
                     </div>
                 </div>
