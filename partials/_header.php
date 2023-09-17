@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/forum">iDiscuss</a>
@@ -29,6 +33,21 @@
           <a class="nav-link" href="contact.php">Contact</a>
         </li>
       </ul>
+<?php
+  if(isset($_SESSION['loggedin']) && $_SESSION['loggedin']==true){
+?>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+      <p class="text-light my-0 mx-2">Welcome,<?= $_SESSION['useremail'] ?></p>
+      <div class="mx-2">
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">Logout</button>
+      </div>
+<?php
+  }
+  else{
+?>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
@@ -37,6 +56,9 @@
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#signupModal">SignUp</button>
       </div>
+<?php
+  }
+?>
     </div>
   </div>
 </nav>
@@ -49,12 +71,10 @@ include 'partials/_signupModal.php';
 // alert whenever a new user registers
 if(isset($_GET['signupsuccess']) && $_GET['signupsuccess']=="true"){
 ?>
-
-<div class="alert alert-success alert-dismissible fade show my-0" role="alert">
-  <strong>Registration Successful!</strong> You have successfully registered in iDiscuss Forum.
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-
+  <div class="alert alert-success alert-dismissible fade show my-0" role="alert">
+    <strong>Registration Successful!</strong> You have successfully registered in iDiscuss Forum.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 <?php
 }
 ?>
