@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
         }
         else{
-            echo "unable to login";
+            header("location: ../index.php");
         }
     }
     else{
@@ -39,9 +39,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         // else{
         //     $showError = "Passwords do not match";
         // }
-        echo "This E-mail is not registered.";
+        header("location: ../index.php");
     }
-    header("location: ../index.php?signupsuccess=false&error=$showError");
+    // header("location: ../index.php?signupsuccess=false&error=$showError");
 }
 
 

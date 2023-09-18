@@ -42,7 +42,7 @@ session_start();
       </form>
       <p class="text-light my-0 mx-2">Welcome,<?= $_SESSION['useremail'] ?></p>
       <div class="mx-2">
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">Logout</button>
+        <a href="partials/_logout.php" class="btn btn-success">Logout</a>
       </div>
 <?php
   }
