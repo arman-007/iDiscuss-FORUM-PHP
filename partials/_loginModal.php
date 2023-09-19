@@ -10,12 +10,12 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="loginEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="loginEmail1" name="loginEmail" aria-describedby="emailHelp">
+                        <input type="email" class="form-control" id="loginEmail1" name="loginEmail" required>
                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
                     <div class="mb-3">
                         <label for="loginPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="loginPassword" id="loginPassword">
+                        <input type="password" class="form-control" name="loginPassword" id="loginPassword" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>

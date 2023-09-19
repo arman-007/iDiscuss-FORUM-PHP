@@ -12,15 +12,6 @@ $categoryName = $row['category_name'];
 $categoryDescription = $row['category_description'];
 
 $showThreadInsertionAlert = false;
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    // echo "DONE!";
-    $threadTitle = $_POST['title'];
-    $threadDescription = $_POST['description'];
-    $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_category_id`, `thread_user_id`, `timestamp`) VALUES ('$threadTitle', '$threadDescription', '$id', '0', current_timestamp())";
-    $result = mysqli_query($conn,$sql);
-
-    $showThreadInsertionAlert = true;
-}
 ?>
 
 
@@ -39,6 +30,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- navbar -->
     <?php include 'partials/_header.php' ?>
+
+    <!-- necessary php program for this file -->
+    <!-- necessary php program for this file -->
+    <?php
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // echo "DONE!";
+        $threadTitle = $_POST['title'];
+        $threadDescription = $_POST['description'];
+        $threadCreatorID = $_SESSION['userID'];
+        $sql = "INSERT INTO `threads` (`thread_title`, `thread_desc`, `thread_category_id`, `thread_user_id`, `timestamp`) VALUES ('$threadTitle', '$threadDescription', '$id', '$threadCreatorID', current_timestamp())";
+        $result = mysqli_query($conn,$sql);
+    
+        $showThreadInsertionAlert = true;
+    }
+    ?>
+    <!-- necessary php program for this file -->
+    <!-- necessary php program for this file -->
 
     <!-- thread insertion confirmation alert  -->
     <?php

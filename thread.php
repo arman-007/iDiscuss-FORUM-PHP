@@ -1,3 +1,16 @@
+<?php
+    include 'partials/_dbconnect.php';
+    $id = $_GET['threadid'];
+    $sql = "SELECT * FROM `threads` WHERE thread_id=$id";
+    $result = mysqli_query($conn,$sql);
+
+    // use a for loop to iterate through categories
+    $row = mysqli_fetch_assoc($result);
+    $threadId = $row['thread_id'];
+    $threadTitle = $row['thread_title'];
+    $threadDescription = $row['thread_desc'];
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -17,30 +30,19 @@
     <!-- necessary php program for this file -->
     <!-- necessary php program for this file -->
     <?php
-        include 'partials/_dbconnect.php';
-        $id = $_GET['threadid'];
-        $sql = "SELECT * FROM `threads` WHERE thread_id=$id";
-        $result = mysqli_query($conn,$sql);
-
-        // use a for loop to iterate through categories
-        $row = mysqli_fetch_assoc($result);
-        $threadId = $row['thread_id'];
-        $threadTitle = $row['thread_title'];
-        $threadDescription = $row['thread_desc'];
         // session_start();
         if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
-            $userName = $_SESSION['username'];
+            $commentorID = $_SESSION['userID'];
         }
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $comment = $_POST['comment'];
-            $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `commented_at`) VALUES ('$comment', '$id', '$userName', current_timestamp())";
+            $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `commented_at`) VALUES ('$comment', '$id', '$commentorID', current_timestamp())";
             $result = mysqli_query($conn, $sql);
         }
     ?>
     <!-- necessary php program for this file -->
     <!-- necessary php program for this file -->
-
 
     <!-- banner for thread details -->
     <div class="container my-4">
@@ -59,41 +61,7 @@
         </div>
     </div>
 
-    <!-- all the comments on this thread -->
-    <div class="container">
-        <!-- <h1 class="my-3">Browse Threads</h1> -->
-
-        <?php
-            $sql = "SELECT * FROM `comments` WHERE thread_id = $threadId";
-            $result = mysqli_query($conn, $sql);
-            while($row = mysqli_fetch_assoc($result)){
-                $commentId = $row['comment_id'];
-                $comment = $row['comment_content'];
-                $commentTime = $row['commented_at'];
-                $commentorUserName = $row['comment_by'];
-
-                // these data are fetched to get the name of the commentors
-                // $threadCommentorSQL = "SELECT user_name FROM `users` WHERE user_name = $commentorUserName";
-                // $threadCommentorResult = mysqli_query($conn, $threadCommentorSQL);
-                // $threadCommentorName = mysqli_fetch_assoc($threadCommentorResult);
-        ?>
-        <!-- comments list -->
-        <div class="d-flex my-2">
-            <div class="flex-shrink-0">
-                <img src="..." alt="...">
-            </div>
-            <div class="flex-grow-1 ms-3">
-                <h6 class="mt-0 my-0"> <a href="thread.php" class="link-dark"><?= $commentorUserName ?></a> : <?= $commentTime ?> </h6>
-                <?= $comment ?>
-            </div>
-        </div>
-        <?php
-            }
-        ?>
-    </div>
-
     <hr>
-
     <!-- form to comment on a thread -->
     <?php
         if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
@@ -118,6 +86,43 @@
     <?php
         }
     ?>
+
+    <hr>
+
+    <!-- all the comments on this thread -->
+    <div class="container">
+        <!-- <h1 class="my-3">Browse Threads</h1> -->
+
+        <?php
+            $sql = "SELECT * FROM `comments` WHERE thread_id = $threadId";
+            $result = mysqli_query($conn, $sql);
+            while($row = mysqli_fetch_assoc($result)){
+                $commentId = $row['comment_id'];
+                $comment = $row['comment_content'];
+                $commentTime = $row['commented_at'];
+                $commentorUserID = $row['comment_by'];
+
+                // these data are fetched to get the name of the commentors
+                $threadCommentorSQL = "SELECT user_name FROM `users` WHERE user_id = $commentorUserID";
+                $threadCommentorResult = mysqli_query($conn, $threadCommentorSQL);
+                $threadCommentorName = mysqli_fetch_assoc($threadCommentorResult);
+                // print_r($threadCommentorName) ;
+        ?>
+        <!-- comments list -->
+        <div class="d-flex my-2">
+            <div class="flex-shrink-0">
+                <img src="..." alt="...">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h6 class="mt-0 my-0">Commented by <a href="thread.php?threadid=<?= $id ?>" class="link-dark"><?= $threadCommentorName['user_name'] ?></a> : <?= $commentTime ?> </h6>
+                <?= $comment ?>
+            </div>
+        </div>
+        <?php
+            }
+        ?>
+    </div>
+
 
     <!-- footer -->
     <?php include 'partials/_footer.php' ?>
