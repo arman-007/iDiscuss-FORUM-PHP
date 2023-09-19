@@ -40,7 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <!-- navbar -->
     <?php include 'partials/_header.php' ?>
 
-    <!-- thread insert confirmation alert  -->
+    <!-- thread insertion confirmation alert  -->
     <?php
         if($showThreadInsertionAlert){
     ?>
@@ -73,6 +73,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <hr>
 
     <!-- form to create thread -->
+    <?php
+        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+    ?>
     <div class="container">
         <h1 class="mt-2">Start a Discussion</h1>
         <form class="container my-5" action="threadList.php?categoryid=<?= $id ?>" method="post">
@@ -88,6 +91,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             <button type="submit" class="btn btn-success">Submit</button>
         </form>
     </div>
+    <?php
+        }
+        else{
+    ?>
+    <div class="container text-center">
+        <h5>Please <a href="" data-bs-toggle="modal" data-bs-target="#loginModal">login</a>  to start a discussion or thread.</h5>
+    </div>
+    <?php
+        }
+    ?>
 
     <hr>
 
@@ -105,6 +118,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $threadTitle = $row['thread_title'];
                 $threadDesc = $row['thread_desc'];
                 $threadTime = $row['timestamp'];
+                $threadCreatorID = $row['thread_user_id'];
+                
+                // these data are fetched to get the name of the thread creator
+                $threadCreatorSQL = "SELECT user_name FROM `users` WHERE user_id = $threadCreatorID";
+                $threadCreatorResult = mysqli_query($conn, $threadCreatorSQL);
+                $threadCreatorName = mysqli_fetch_assoc($threadCreatorResult);
         ?>
                 <!-- thred list -->
                 <div class="d-flex my-2">
@@ -112,7 +131,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                         <img src="..." alt="...">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <h6 class="mt-0"> <a href="thread.php?threadid=<?= $threadId ?>" class="link-dark"> <?= $threadTitle ?> </a> : <?= $threadTime ?> </h6>
+                        <h6 class="mt-0"> <a href="thread.php?threadid=<?= $threadId ?>" class="link-dark"><?= $threadTitle ?></a> posted by <?= $threadCreatorName['user_name'] ?>: <?= $threadTime ?> </h6>
                         <?= $threadDesc ?>
                     </div>
                 </div>
@@ -120,10 +139,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             }
             if($noThread){
         ?>
-
-        <p class="h5">Pretty Empty Here!</p>
-        <p class="h6">Be the first one to post a thread.</p>
-
+                <p class="h5">Pretty Empty Here!</p>
+                <p class="h6">Be the first one to post a thread.</p>
         <?php
             }
         ?>

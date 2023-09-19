@@ -3,7 +3,7 @@
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     include '_dbconnect.php';
 
-    $userName = $_POST['userNAme'];
+    $userName = $_POST['userName'];
     $userEmail = $_POST['signupEmail'];
     $userPassword = $_POST['signupPassword'];
     $userConfirmPassword = $_POST['signupConfirmPassword'];
@@ -32,6 +32,4 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     }
     header("location: ../index.php?signupsuccess=false&error=$showError");
 }
-
-
 ?>

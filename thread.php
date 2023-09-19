@@ -1,23 +1,3 @@
-<?php
-include 'partials/_dbconnect.php';
-$id = $_GET['threadid'];
-$sql = "SELECT * FROM `threads` WHERE thread_id=$id";
-$result = mysqli_query($conn,$sql);
-
-// use a for loop to iterate through categories
-$row = mysqli_fetch_assoc($result);
-$threadId = $row['thread_id'];
-$threadTitle = $row['thread_title'];
-$threadDescription = $row['thread_desc'];
-
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    $comment = $_POST['comment'];
-    $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `commented_at`) VALUES ('$comment', '$id', 'arman-007', current_timestamp())";
-    $result = mysqli_query($conn, $sql);
-}
-
-?>
-
 <!doctype html>
 <html lang="en">
 
@@ -32,6 +12,35 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <!-- navbar -->
     <?php include 'partials/_header.php' ?>
+
+
+    <!-- necessary php program for this file -->
+    <!-- necessary php program for this file -->
+    <?php
+        include 'partials/_dbconnect.php';
+        $id = $_GET['threadid'];
+        $sql = "SELECT * FROM `threads` WHERE thread_id=$id";
+        $result = mysqli_query($conn,$sql);
+
+        // use a for loop to iterate through categories
+        $row = mysqli_fetch_assoc($result);
+        $threadId = $row['thread_id'];
+        $threadTitle = $row['thread_title'];
+        $threadDescription = $row['thread_desc'];
+        // session_start();
+        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+            $userName = $_SESSION['username'];
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $comment = $_POST['comment'];
+            $sql = "INSERT INTO `comments` (`comment_content`, `thread_id`, `comment_by`, `commented_at`) VALUES ('$comment', '$id', '$userName', current_timestamp())";
+            $result = mysqli_query($conn, $sql);
+        }
+    ?>
+    <!-- necessary php program for this file -->
+    <!-- necessary php program for this file -->
+
 
     <!-- banner for thread details -->
     <div class="container my-4">
@@ -58,10 +67,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $sql = "SELECT * FROM `comments` WHERE thread_id = $threadId";
             $result = mysqli_query($conn, $sql);
             while($row = mysqli_fetch_assoc($result)){
-                $commentBy = $row['comment_by'];
                 $commentId = $row['comment_id'];
                 $comment = $row['comment_content'];
                 $commentTime = $row['commented_at'];
+                $commentorUserName = $row['comment_by'];
+
+                // these data are fetched to get the name of the commentors
+                // $threadCommentorSQL = "SELECT user_name FROM `users` WHERE user_name = $commentorUserName";
+                // $threadCommentorResult = mysqli_query($conn, $threadCommentorSQL);
+                // $threadCommentorName = mysqli_fetch_assoc($threadCommentorResult);
         ?>
         <!-- comments list -->
         <div class="d-flex my-2">
@@ -69,7 +83,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <img src="..." alt="...">
             </div>
             <div class="flex-grow-1 ms-3">
-                <h6 class="mt-0 my-0"> <a href="thread.php" class="link-dark"> <?= $commentBy ?> </a> : <?= $commentTime ?> </h6>
+                <h6 class="mt-0 my-0"> <a href="thread.php" class="link-dark"><?= $commentorUserName ?></a> : <?= $commentTime ?> </h6>
                 <?= $comment ?>
             </div>
         </div>
@@ -81,16 +95,29 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <hr>
 
     <!-- form to comment on a thread -->
-    <div class="container">
-        <h1 class="mt-2">Post a Comment</h1>
-        <form class="container my-5" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
-            <div class="form-floating mb-3">
-                <textarea class="form-control" id="threadDescription" name="comment"></textarea>
-                <label for="threadDescription">Comment</label>
+    <?php
+        if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true){
+    ?>
+            <div class="container">
+                <h1 class="mt-2">Post a Comment</h1>
+                <form class="container my-5" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="threadDescription" name="comment"></textarea>
+                        <label for="threadDescription">Comment</label>
+                    </div>
+                    <button type="submit" class="btn btn-success">Post Comment</button>
+                </form>
             </div>
-            <button type="submit" class="btn btn-success">Post Comment</button>
-        </form>
-    </div>
+    <?php
+        }
+        else{
+    ?>
+            <div class="container text-center">
+                <h5>Please <a href="" data-bs-toggle="modal" data-bs-target="#loginModal">login</a>  to post a comment on this discussion or thread.</h5>
+            </div>
+    <?php
+        }
+    ?>
 
     <!-- footer -->
     <?php include 'partials/_footer.php' ?>
