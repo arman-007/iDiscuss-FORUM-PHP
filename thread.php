@@ -56,6 +56,7 @@
                 <a href="#" class="btn btn-success">Learn More</a>
             </div>
             <div class="card-footer text-body-secondary">
+                <span>Posted By: <strong><?= $_SESSION['username'] ?></strong></span>
                 2 days ago
             </div>
         </div>

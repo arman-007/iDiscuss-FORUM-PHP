@@ -3,11 +3,11 @@
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     include '_dbconnect.php';
 
-    $userEmail = $_POST['loginEmail'];
+    $username = $_POST['username'];
     $userPassword = $_POST['loginPassword'];
 
     // check whether this email is registered
-    $sql = "SELECT * FROM `users` WHERE `user_email` = '$userEmail'";
+    $sql = "SELECT * FROM `users` WHERE `user_name` = '$username'";
     $result = mysqli_query($conn, $sql);
     if(mysqli_num_rows($result) == 1){
         $row = mysqli_fetch_assoc($result);
@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         if(password_verify($userPassword, $row['user_password'])){
             session_start();
             $_SESSION['loggedin'] = true;
-            $_SESSION['useremail'] = $userEmail;
+            $_SESSION['username'] = $username;
             $_SESSION['userID'] = $row['user_id'];
             // echo "logged in ". $_SESSION['username'];
             header("location: ../index.php");

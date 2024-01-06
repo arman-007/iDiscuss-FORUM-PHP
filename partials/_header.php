@@ -40,7 +40,7 @@ session_start();
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
-      <p class="text-light my-0 mx-2">Welcome,<?= $_SESSION['useremail'] ?></p>
+      <p class="text-light my-0 mx-2">Welcome, <?= $_SESSION['username'] ?></p>
       <div class="mx-2">
         <a href="partials/_logout.php" class="btn btn-success">Logout</a>
       </div>
